@@ -1,0 +1,5 @@
+[env]
+# The installed Command Line Tools default to MacOSX27.0.sdk, whose arm64e.x1
+# targets are rejected by the bundled ld (ld-1267) on this machine. SDK 26.5
+# is installed and links correctly with the same toolchain.
+SDKROOT = { value = "/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk", force = false }

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-app/
+src-tauri/target/
+src-tauri/gen/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+coverage/
+.vite/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm

@@ -1,0 +1,48 @@
+[package]
+name = "claude-multi"
+version = "0.1.0"
+description = "Claude Multi — local-first multi-provider AI workspace"
+authors = ["Akshath Sinha"]
+edition = "2021"
+rust-version = "1.88"
+
+[lib]
+name = "claude_multi_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-window-state = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"] }
+tokio-util = "0.7"
+reqwest = { version = "0.13", features = ["json", "stream"] }
+futures-util = "0.3"
+rusqlite = { version = "0.41", features = ["bundled"] }
+keyring = "4"
+sha2 = "0.10"
+hex = "0.4"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2"
+dirs = "6"
+mime_guess = "2"
+base64 = "0.22"
+
+[dev-dependencies]
+tempfile = "3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
