@@ -65,8 +65,8 @@ All network access happens in the Rust core; the frontend never talks to a provi
 ## Quick start
 
 ```bash
-git clone https://github.com/akshathsinha08/claude-multi.git
-cd claude-multi
+git clone https://github.com/akshathsinha08/RelayRouting.git
+cd RelayRouting
 npm install
 npm run tauri:dev
 ```
