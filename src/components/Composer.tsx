@@ -80,7 +80,8 @@ export function Composer() {
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               if (event.shiftKey) return;
-              const wantsSend = sendOnEnter ? !event.metaKey : event.metaKey;
+              const modifier = event.metaKey || event.ctrlKey;
+              const wantsSend = sendOnEnter ? !modifier : modifier;
               if (wantsSend) {
                 event.preventDefault();
                 void submit();

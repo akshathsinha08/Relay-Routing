@@ -35,6 +35,12 @@ export function applyTheme(theme: string | undefined): void {
   document.documentElement.style.colorScheme = resolved;
 }
 
+export function applyPlatform(platform: string | undefined): void {
+  if (platform === "macos" || platform === "windows" || platform === "linux") {
+    document.documentElement.dataset.platform = platform;
+  }
+}
+
 export function watchSystemTheme(getTheme: () => string | undefined): void {
   if (systemListenerAttached || !window.matchMedia) return;
   systemListenerAttached = true;
@@ -56,6 +62,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
       const [info, settings] = await Promise.all([api.appInfo(), api.getSettings()]);
       set({ info, settings });
       applyTheme(settings.theme);
+      applyPlatform(info.platform);
       watchSystemTheme(() => get().settings.theme);
       await Promise.all([
         useProvidersStore.getState().load(),

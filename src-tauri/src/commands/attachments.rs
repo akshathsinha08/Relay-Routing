@@ -62,9 +62,7 @@ pub fn open_attachment(
     let context = ctx(&state);
     let attachment = context.db.get_attachment(&id)?;
     let path = ensure_within(&context.paths.attachments_dir, std::path::Path::new(&attachment.path))?;
-    std::process::Command::new("open")
-        .arg(path)
-        .status()
+    tauri_plugin_opener::open_path(path, None::<&str>)
         .map_err(|error| AppError::internal(format!("cannot open attachment: {error}")))?;
     Ok(())
 }

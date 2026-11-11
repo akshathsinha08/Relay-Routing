@@ -304,6 +304,7 @@ pub struct BackupInfo {
 pub struct AppInfo {
     pub version: String,
     pub identifier: String,
+    pub platform: String,
     pub data_dir: String,
     pub db_path: String,
     pub log_dir: String,

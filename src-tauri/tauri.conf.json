@@ -30,18 +30,24 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["app", "dmg"],
+    "targets": ["app", "dmg", "nsis", "msi", "deb", "appimage"],
     "category": "DeveloperTool",
     "shortDescription": "Local-first multi-provider AI workspace",
-    "longDescription": "Relay Routing is a local-first AI workspace for macOS with Ollama and Anthropic support, persistent projects, and durable tasks.",
+    "longDescription": "Relay Routing is a local-first AI workspace with Ollama and Anthropic support, persistent projects, and durable tasks.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
-      "icons/icon.icns"
+      "icons/icon.icns",
+      "icons/icon.ico"
     ],
     "macOS": {
       "minimumSystemVersion": "12.0"
+    },
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      }
     }
   }
 }

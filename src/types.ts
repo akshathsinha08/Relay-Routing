@@ -1,6 +1,7 @@
 export interface AppInfo {
   version: string;
   identifier: string;
+  platform: string;
   dataDir: string;
   dbPath: string;
   logDir: string;

@@ -1,11 +1,13 @@
 # Project status
 
-Last updated: 2026-11-11
+Last updated: 2026-11-12
 
 ## State
 
-v0.1.0 plus generation-level account routing and interrupted-response continuity, built and
-tested on macOS 26.6 arm64.
+v0.1.0 plus generation-level account routing, interrupted-response continuity, and
+cross-platform support (macOS, Windows, Linux). Core development and live verification
+happened on macOS 26.6 arm64; Windows and Linux builds compile and pass the same automated
+checks in CI, with manual Windows/Linux testing still pending.
 
 - Frontend: React 19 + TypeScript, complete UI (chat, projects, project detail, tasks,
   providers, settings, onboarding).
@@ -15,9 +17,12 @@ tested on macOS 26.6 arm64.
   and Google Gemini (implemented; live cloud use needs a real API key).
 - Continuity: additive schema v2, generation/attempt/segment records, bounded same-provider
   retry, startup recovery, and explicit Continue.
-- Packaging: unsigned `.app` and `.dmg` produced.
+- Packaging: unsigned `.app` and `.dmg` on macOS; NSIS + MSI targets on Windows and
+  deb + AppImage targets on Linux configured (to be built on each OS).
 
 ## Verification performed
+
+macOS (local):
 
 | Check | Result |
 | --- | --- |
@@ -32,14 +37,23 @@ tested on macOS 26.6 arm64.
 | Mock generation tests | transient 500 retry and interrupted-response Continue pass |
 | Frontend continuity tests | Continue stream events, interrupted badge, and segment attribution pass |
 
+Cross-platform: the same typecheck/frontend-test/Rust-test/clippy suite runs in CI on
+macOS, Windows, and Linux runners (`.github/workflows/ci.yml`).
+
 Artifacts:
 
 - `src-tauri/target/release/bundle/macos/RelayRouting.app`
 - `src-tauri/target/release/bundle/dmg/RelayRouting_0.1.0_aarch64.dmg`
+- Windows `nsis/` + `msi/` and Linux `deb/` + `appimage/` installers build with
+  `npm run tauri:build` on those platforms.
 
 ## Known limitations
 
-- The app is unsigned and not notarized; macOS Gatekeeper will warn on other machines.
+- The app is unsigned and not notarized; macOS Gatekeeper will warn on other machines and
+  Windows SmartScreen will prompt on the installers.
+- Windows and Linux have not been manually exercised yet (install, keychain round-trip,
+  opener behavior); CI compiles and tests pass on both.
+- Linux requires a Secret Service provider (gnome-keyring/KWallet) to store API keys.
 - No auto-updater or crash reporting.
 - Anthropic was not exercised end-to-end because no API key was provided; the request/SSE
   and assistant-prefill continuation paths are implemented and compiled, but live behavior is

@@ -2,7 +2,7 @@
   "name": "relay-routing",
   "private": true,
   "version": "0.1.0",
-  "description": "Relay Routing — local-first multi-provider AI workspace for macOS",
+  "description": "Relay Routing — local-first multi-provider AI workspace for macOS, Windows, and Linux",
   "type": "module",
   "scripts": {
     "dev": "vite",

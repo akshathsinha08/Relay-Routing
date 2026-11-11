@@ -132,9 +132,7 @@ pub fn open_artifact(state: State<'_, Arc<AppContext>>, id: String) -> Result<()
         &context.paths.artifacts_dir,
         std::path::Path::new(&artifact.path),
     )?;
-    std::process::Command::new("open")
-        .arg(path)
-        .status()
+    tauri_plugin_opener::open_path(path, None::<&str>)
         .map_err(|error| AppError::internal(format!("cannot open artifact: {error}")))?;
     Ok(())
 }

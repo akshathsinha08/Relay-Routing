@@ -9,7 +9,7 @@ React 19 + TypeScript (Vite)
 Rust core (Tauri 2)
   commands → services → providers / database / tasks
         │
-SQLite (rusqlite, WAL) + macOS Keychain + managed files
+SQLite (rusqlite, WAL) + OS credential store + managed files
 ```
 
 - The frontend never talks to a provider directly. All network access happens in Rust.
@@ -35,8 +35,11 @@ Notable constraints:
   `interruption_reason`; Continue adds a new attempt to the same generation.
 - Foreign keys are enforced; deleting a project/conversation cascades to owned rows.
 - Settings are a key/value table with a server-side allowlist and range checks.
-- Secrets live only in the Keychain, under service `com.akshathsinha.relayrouting` and
-  username `provider-account:<account_id>`.
+- Secrets live only in the OS credential store — macOS Keychain, Windows Credential Manager,
+  or the Linux Secret Service — under service `com.akshathsinha.relayrouting` and
+  username `provider-account:<account_id>` (the `keyring` crate selects the backend).
+- Opening data folders, attachments, and artifacts uses `tauri-plugin-opener`, which resolves
+  the platform launcher (`open`, `explorer`, `xdg-open`).
 
 ## Providers
 

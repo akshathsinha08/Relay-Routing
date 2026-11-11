@@ -139,6 +139,13 @@ a {
   padding: 52px 10px 10px;
 }
 
+/* macOS uses an overlay titlebar, so the sidebar clears the traffic lights.
+   Windows and Linux use the native titlebar and need no top inset. */
+html[data-platform="windows"] .sidebar,
+html[data-platform="linux"] .sidebar {
+  padding-top: 12px;
+}
+
 .sidebar-brand {
   display: flex;
   align-items: center;

@@ -39,6 +39,7 @@ fn init_logging(paths: &AppPaths) {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_window_state::Builder::default().build())
         .setup(|app| {
             let paths = AppPaths::resolve(app.handle())?;

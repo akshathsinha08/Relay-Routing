@@ -2,10 +2,20 @@
 
 ## Prerequisites
 
+Common (all platforms):
+
 - Node 20+ (verified with 26.13.0) and npm
 - Rust stable with `clippy` (verified with 1.99.1)
-- Xcode Command Line Tools
 - Ollama (optional, for local models)
+
+Platform-specific:
+
+- **macOS** — Xcode Command Line Tools (`xcode-select --install`)
+- **Windows** — Rust with the `x86_64-pc-windows-msvc` host toolchain plus Visual Studio
+  Build Tools 2022 with the "Desktop development with C++" workload. WebView2 headers/SDK
+  are not required at build time.
+- **Linux** — `libwebkit2gtk-4.1-dev`, `build-essential`, `libxdo-dev`, `libssl-dev`,
+  `libayatana-appindicator3-dev` (Debian/Ubuntu names; equivalents exist for Fedora/Arch).
 
 ## Setup
 
@@ -21,7 +31,7 @@ npm run tauri:dev
 | `npm run dev` | Vite dev server only |
 | `npm run tauri:dev` | Desktop app with HMR |
 | `npm run build` | Typecheck + production frontend bundle |
-| `npm run tauri:build` | Desktop app + DMG |
+| `npm run tauri:build` | Desktop app + platform installers |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run test` | Vitest unit tests |
 | `npm run test:watch` | Vitest watch mode |
@@ -45,9 +55,13 @@ Remove this only if your toolchain links against the default SDK.
 ## Environment
 
 - Ollama base URL defaults to `http://127.0.0.1:11434` (editable in Providers).
-- Anthropic key is entered in the UI and stored in the Keychain.
-- App data: `~/Library/Application Support/com.akshathsinha.relayrouting/`
-  (`relayrouting.sqlite3`, `attachments/`, `artifacts/`, `logs/`).
+- Anthropic key is entered in the UI and stored in the OS credential store (macOS Keychain,
+  Windows Credential Manager, Linux Secret Service).
+- App data per platform:
+  - macOS: `~/Library/Application Support/com.akshathsinha.relayrouting/`
+  - Windows: `%APPDATA%\com.akshathsinha.relayrouting\`
+  - Linux: `~/.local/share/com.akshathsinha.relayrouting/`
+- Contents: `relayrouting.sqlite3`, `attachments/`, `artifacts/`, `logs/`.
 
 ## Migrations
 
@@ -67,5 +81,8 @@ released, and bump the version check in `database/mod.rs`.
 1. Bump versions in `package.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json`.
 2. Update `docs/CHANGELOG.md` and `docs/PROJECT_STATUS.md`.
 3. Run typecheck, frontend/Rust tests, and clippy.
-4. `npm run tauri:build`; artifacts land in `src-tauri/target/release/bundle/`.
+4. `npm run tauri:build`; artifacts land in `src-tauri/target/release/bundle/` and differ by
+   build platform (`dmg/` + `macos/` on macOS, `nsis/` + `msi/` on Windows, `deb/` +
+   `appimage/` on Linux). Build on each target OS (or use the CI matrix) to publish
+   cross-platform installers.
 5. Signing/notarization is not configured; distribute accordingly.

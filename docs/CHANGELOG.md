@@ -4,6 +4,19 @@
 
 ### Added
 
+- Windows and Linux support alongside macOS.
+  - Bundle targets for Windows (NSIS setup, MSI) and Linux (deb, AppImage); WebView2 is
+    bootstrapped by the NSIS installer.
+  - Opening the data folder, attachments, and artifacts now uses `tauri-plugin-opener`
+    instead of the macOS-only `open` command (`explorer` on Windows, `xdg-open` on Linux).
+  - API keys use the OS credential store on every platform: macOS Keychain, Windows
+    Credential Manager, Linux Secret Service.
+  - `app_info` reports the build platform; the sidebar layout adapts to native titlebars
+    on Windows/Linux instead of the macOS traffic-light inset.
+  - Ctrl+Enter sends on Windows/Linux (Cmd+Enter on macOS) in addition to the
+    Enter/Cmd+Enter send modes.
+  - Cross-platform CI matrix (macOS, Windows, Linux) for typecheck, frontend/Rust tests,
+    and clippy.
 - OpenRouter and Google Gemini provider kinds with API-key accounts, model discovery,
   streaming chat, reasoning/usage events, and non-streaming completion.
 - Additive schema v3 rebuilding the `providers` table to allow the new kinds.

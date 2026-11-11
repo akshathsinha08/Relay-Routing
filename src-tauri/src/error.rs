@@ -75,6 +75,12 @@ impl From<keyring::Error> for AppError {
     }
 }
 
+impl From<tauri_plugin_opener::Error> for AppError {
+    fn from(value: tauri_plugin_opener::Error) -> Self {
+        Self::new("opener_error", value.to_string())
+    }
+}
+
 impl From<crate::providers::ProviderError> for AppError {
     fn from(value: crate::providers::ProviderError) -> Self {
         Self::new(value.code(), value.to_string())

@@ -4,12 +4,12 @@
 
 # Relay Routing
 
-**A local-first, multi-provider AI workspace for macOS.**
+**A local-first, multi-provider AI workspace for macOS, Windows, and Linux.**
 
 Chat with local Ollama models or hosted providers, organize work into projects,
 attach files, and run durable multi-step research tasks that produce Markdown reports.
 
-[![Platform](https://img.shields.io/badge/platform-macOS%2012%2B-black?logo=apple)](https://www.apple.com/macos/)
+[![Platform](https://img.shields.io/badge/platform-macOS%2012%2B%20%7C%20Windows%2010%2B%20%7C%20Linux-black)](https://github.com/akshathsinha08/Relay-Routing)
 [![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB?logo=tauri&logoColor=white)](https://tauri.app/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Rust](https://img.shields.io/badge/Rust-stable-000000?logo=rust)](https://www.rust-lang.org/)
@@ -22,9 +22,9 @@ attach files, and run durable multi-step research tasks that produce Markdown re
 ## Overview
 
 Relay Routing is a desktop app that keeps your conversations, projects, tasks, attachments,
-and usage on your Mac. Conversations are account-independent: pick a provider and model once,
+and usage on your machine. Conversations are account-independent: pick a provider and model once,
 and eligible accounts are resolved per generation. Everything is stored locally in SQLite,
-and API keys live in the macOS Keychain — no telemetry, no cloud sync.
+and API keys live in your operating system's credential store — no telemetry, no cloud sync.
 
 ## Features
 
@@ -42,7 +42,8 @@ and API keys live in the macOS Keychain — no telemetry, no cloud sync.
 - **Durable tasks** — a model writes a capped JSON plan, the engine executes steps sequentially
   with checkpoints, supports pause/cancel/resume, and writes a final report.
 - **Local by default** — no telemetry, no cloud sync, no cookie or session extraction.
-- **Keyboard friendly** — `⌘N` new conversation, `⌘,` settings, Enter/⌘Enter send modes.
+- **Keyboard friendly** — `⌘N`/`Ctrl+N` new conversation, `⌘,`/`Ctrl+,` settings, Enter/⌘Enter (or
+  Ctrl+Enter) send modes.
 
 ## Providers
 
@@ -55,14 +56,32 @@ and API keys live in the macOS Keychain — no telemetry, no cloud sync.
 
 All network access happens in the Rust core; the frontend never talks to a provider directly.
 
+## Supported platforms
+
+| Platform | Minimum | Credential store | App data directory |
+| --- | --- | --- | --- |
+| macOS | 12 (Monterey) | Keychain | `~/Library/Application Support/com.akshathsinha.relayrouting/` |
+| Windows | 10 (x64) | Credential Manager | `%APPDATA%\com.akshathsinha.relayrouting\` |
+| Linux | glibc-based desktop | Secret Service (e.g. gnome-keyring/KWallet) | `~/.local/share/com.akshathsinha.relayrouting/` |
+
 ## Requirements
 
-- macOS 12+ (built and verified on macOS 26.6 arm64)
+- macOS 12+, Windows 10+ (x64), or a glibc-based Linux desktop
 - Ollama running locally for local models (optional)
 - Node 20+ and Rust stable only if building from source
 - An API key only if using a hosted provider
 
-## Quick start
+Platform-specific notes:
+
+- **Windows** — the NSIS installer downloads and installs the
+  [Microsoft Edge WebView2 runtime](https://developer.microsoft.com/microsoft-edge/webview2/)
+  automatically if it is not already present (it ships with Windows 11 and current Windows 10
+  updates). API keys are stored in Windows Credential Manager.
+- **Linux** — a running Secret Service provider (gnome-keyring or KWallet, standard on GNOME
+  and KDE desktops) is required to store provider API keys; on minimal window-manager setups
+  account secrets cannot be saved.
+
+## Quick start (build from source)
 
 ```bash
 git clone https://github.com/akshathsinha08/Relay-Routing.git
@@ -71,13 +90,47 @@ npm install
 npm run tauri:dev
 ```
 
+Build prerequisites by platform:
+
+- **macOS** — Xcode Command Line Tools (`xcode-select --install`).
+- **Windows** — [Rust with the MSVC toolchain](https://rustup.rs/) plus
+  [Visual Studio Build Tools 2022](https://visualstudio.microsoft.com/downloads/)
+  ("Desktop development with C++" workload). The commands above work in PowerShell or cmd.
+- **Linux** — Rust plus the WebKitGTK development packages. On Debian/Ubuntu:
+
+  ```bash
+  sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file \
+    libxdo-dev libssl-dev libayatana-appindicator3-dev
+  ```
+
+  On Fedora: `sudo dnf install webkit2gtk4.1-devel openssl-devel libxdo-devel
+  libappindicator-gtk3-devel`.
+
+## Install (prebuilt)
+
+Prebuilt packages are attached to releases on the GitHub Releases page (currently unsigned;
+see [Known limitations](#known-limitations)):
+
+- **Windows** — download `Relay Routing_<version>_x64-setup.exe` (NSIS installer) and run it.
+  The installer sets up WebView2 if needed, installs the app into
+  `%LOCALAPPDATA%\Programs\Relay Routing\` (per-user, no admin required), and adds a Start-menu
+  entry. If you prefer WiX, `Relay Routing_<version>_x64_en-US.msi` is also published.
+- **Linux** — install the `.deb` (`sudo apt install ./relay-routing_*.deb`) or run the
+  AppImage (`chmod +x RelayRouting_*.AppImage && ./RelayRouting_*.AppImage`). The deb depends
+  on `libwebkit2gtk-4.1-0` and `libayatana-appindicator3-1`, which apt resolves automatically.
+- **macOS** — open the `.dmg` and drag the app to `/Applications`.
+
 ## Build
 
 ```bash
 npm run tauri:build
 ```
 
-The unsigned app and DMG are written under `src-tauri/target/release/bundle/`.
+Installers are written under `src-tauri/target/release/bundle/` for the platform you build on:
+
+- macOS: `dmg/Relay Routing_0.1.0_aarch64.dmg` and `macos/` app bundle
+- Windows: `nsis/*.exe` (NSIS setup) and `msi/*.msi` (WiX)
+- Linux: `deb/*.deb` and `appimage/*.AppImage`
 
 ## Verify
 
@@ -98,13 +151,15 @@ React 19 + TypeScript (Vite)
 Rust core (Tauri 2)
   commands → services → providers / database / tasks
         │
-SQLite (rusqlite, WAL) + macOS Keychain + managed files
+SQLite (rusqlite, WAL) + OS credential store + managed files
 ```
 
 - Chat streaming uses `tauri::ipc::Channel<StreamEvent>`; task progress is polled.
-- Secrets live only in the Keychain under service `com.akshathsinha.relayrouting`.
-- App data: `~/Library/Application Support/com.akshathsinha.relayrouting/`
-  (`relayrouting.sqlite3`, `attachments/`, `artifacts/`, `logs/`).
+- Secrets live only in the operating system credential store (macOS Keychain, Windows
+  Credential Manager, or the Linux Secret Service) under service
+  `com.akshathsinha.relayrouting`.
+- App data: `relayrouting.sqlite3`, `attachments/`, `artifacts/`, `logs/` under the
+  platform directory listed in [Supported platforms](#supported-platforms).
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the data model, routing, and streaming
 details.
@@ -131,7 +186,11 @@ tests/                Frontend test suites
 
 ## Known limitations
 
-- The app is unsigned and not notarized; macOS Gatekeeper warns on other machines.
+- The app is unsigned and not notarized; macOS Gatekeeper warns on other machines, and Windows
+  shows a SmartScreen prompt ("More info" → "Run anyway") for the installers.
+- Windows and Linux builds are newer than the macOS build and have had less manual testing;
+  report issues on the tracker.
+- Linux requires a Secret Service provider (gnome-keyring/KWallet) to store API keys.
 - No auto-updater or crash reporting.
 - Task agent steps use non-streaming completions and no tool use; plans are capped at
   `taskMaxSteps` (default 8).
