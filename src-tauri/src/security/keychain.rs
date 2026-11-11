@@ -2,7 +2,7 @@ use keyring::Entry;
 
 use crate::error::AppError;
 
-const SERVICE: &str = "com.akshathsinha.claudemulti";
+const SERVICE: &str = "com.akshathsinha.relayrouting";
 
 fn account_name(account_id: &str) -> String {
     format!("provider-account:{account_id}")
@@ -45,6 +45,6 @@ mod tests {
     #[test]
     fn account_names_are_scoped() {
         assert_eq!(account_name("abc"), "provider-account:abc");
-        assert_eq!(SERVICE, "com.akshathsinha.claudemulti");
+        assert_eq!(SERVICE, "com.akshathsinha.relayrouting");
     }
 }

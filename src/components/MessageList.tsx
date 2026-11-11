@@ -75,10 +75,10 @@ function MessageRow({ view }: { view: MessageView }) {
 
   return (
     <div className={`message ${assistant ? "assistant" : "user"}`}>
-      <div className="avatar">{assistant ? "CM" : initials("You")}</div>
+      <div className="avatar">{assistant ? "RR" : initials("You")}</div>
       <div className="message-main">
         <div className="message-meta">
-          <span className="message-author">{assistant ? "Claude Multi" : "You"}</span>
+          <span className="message-author">{assistant ? "Relay Routing" : "You"}</span>
           {assistant && message.model ? (
             <span className="faint small-text">
               {message.model}

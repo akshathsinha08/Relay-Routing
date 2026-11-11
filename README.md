@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="public/logo.png" alt="Claude Multi logo" width="160" height="160" />
+<img src="public/logo.png" alt="Relay Routing logo" width="160" height="160" />
 
-# Claude Multi
+# Relay Routing
 
 **A local-first, multi-provider AI workspace for macOS.**
 
@@ -21,7 +21,7 @@ attach files, and run durable multi-step research tasks that produce Markdown re
 
 ## Overview
 
-Claude Multi is a desktop app that keeps your conversations, projects, tasks, attachments,
+Relay Routing is a desktop app that keeps your conversations, projects, tasks, attachments,
 and usage on your Mac. Conversations are account-independent: pick a provider and model once,
 and eligible accounts are resolved per generation. Everything is stored locally in SQLite,
 and API keys live in the macOS Keychain — no telemetry, no cloud sync.
@@ -102,9 +102,9 @@ SQLite (rusqlite, WAL) + macOS Keychain + managed files
 ```
 
 - Chat streaming uses `tauri::ipc::Channel<StreamEvent>`; task progress is polled.
-- Secrets live only in the Keychain under service `com.akshathsinha.claudemulti`.
-- App data: `~/Library/Application Support/com.akshathsinha.claudemulti/`
-  (`claude-multi.sqlite3`, `attachments/`, `artifacts/`, `logs/`).
+- Secrets live only in the Keychain under service `com.akshathsinha.relayrouting`.
+- App data: `~/Library/Application Support/com.akshathsinha.relayrouting/`
+  (`relayrouting.sqlite3`, `attachments/`, `artifacts/`, `logs/`).
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the data model, routing, and streaming
 details.

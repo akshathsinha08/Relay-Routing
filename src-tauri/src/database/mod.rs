@@ -197,7 +197,7 @@ impl Db {
     pub fn backup_to(&self, dir: &Path) -> Result<crate::database::models::BackupInfo, AppError> {
         std::fs::create_dir_all(dir)?;
         let stamp = Utc::now().format("%Y%m%d-%H%M%S");
-        let dest = dir.join(format!("claude-multi-{stamp}.db"));
+        let dest = dir.join(format!("relayrouting-{stamp}.db"));
         if dest.exists() {
             return Err(AppError::invalid("a backup with this timestamp already exists"));
         }

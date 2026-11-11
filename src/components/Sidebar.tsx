@@ -55,7 +55,7 @@ export function Sidebar() {
     <aside className="sidebar">
       <div className="sidebar-brand">
         <img className="brand-mark" src={logo} alt="" />
-        <span>Claude Multi</span>
+        <span>Relay Routing</span>
       </div>
 
       <div className="sidebar-actions">

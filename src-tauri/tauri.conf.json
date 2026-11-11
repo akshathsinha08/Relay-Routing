@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Claude Multi",
+  "productName": "RelayRouting",
   "version": "0.1.0",
-  "identifier": "com.akshathsinha.claudemulti",
+  "identifier": "com.akshathsinha.relayrouting",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Claude Multi",
+        "title": "Relay Routing",
         "width": 1320,
         "height": 860,
         "minWidth": 940,
@@ -33,7 +33,7 @@
     "targets": ["app", "dmg"],
     "category": "DeveloperTool",
     "shortDescription": "Local-first multi-provider AI workspace",
-    "longDescription": "Claude Multi is a local-first AI workspace for macOS with Ollama and Anthropic support, persistent projects, and durable tasks.",
+    "longDescription": "Relay Routing is a local-first AI workspace for macOS with Ollama and Anthropic support, persistent projects, and durable tasks.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

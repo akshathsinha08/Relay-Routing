@@ -18,10 +18,10 @@ use crate::database::Db;
 use crate::state::{AppContext, AppPaths};
 
 fn init_logging(paths: &AppPaths) {
-    let appender = tracing_appender::rolling::daily(&paths.logs_dir, "claude-multi.log");
+    let appender = tracing_appender::rolling::daily(&paths.logs_dir, "relayrouting.log");
     let (writer, guard) = tracing_appender::non_blocking(appender);
     let filter = EnvFilter::try_from_default_env()
-        .unwrap_or_else(|_| EnvFilter::new("claude_multi_lib=info,tauri=warn"));
+        .unwrap_or_else(|_| EnvFilter::new("relay_routing_lib=info,tauri=warn"));
     tracing_subscriber::registry()
         .with(filter)
         .with(
@@ -51,7 +51,7 @@ pub fn run() {
             }
             let context = AppContext::new(Arc::new(db), paths);
             app.manage(context);
-            tracing::info!("Claude Multi started");
+            tracing::info!("Relay Routing started");
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

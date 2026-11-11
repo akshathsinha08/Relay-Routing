@@ -9,7 +9,7 @@ use crate::providers::{
     ProviderConfig, ProviderError, StreamEvent,
 };
 
-const TITLE: &str = "Claude Multi";
+const TITLE: &str = "Relay Routing";
 
 fn require_key(config: &ProviderConfig) -> Result<&str, ProviderError> {
     config

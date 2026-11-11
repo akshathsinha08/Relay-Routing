@@ -46,8 +46,8 @@ Remove this only if your toolchain links against the default SDK.
 
 - Ollama base URL defaults to `http://127.0.0.1:11434` (editable in Providers).
 - Anthropic key is entered in the UI and stored in the Keychain.
-- App data: `~/Library/Application Support/com.akshathsinha.claudemulti/`
-  (`claude-multi.sqlite3`, `attachments/`, `artifacts/`, `logs/`).
+- App data: `~/Library/Application Support/com.akshathsinha.relayrouting/`
+  (`relayrouting.sqlite3`, `attachments/`, `artifacts/`, `logs/`).
 
 ## Migrations
 

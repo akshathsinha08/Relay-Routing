@@ -35,7 +35,7 @@ Notable constraints:
   `interruption_reason`; Continue adds a new attempt to the same generation.
 - Foreign keys are enforced; deleting a project/conversation cascades to owned rows.
 - Settings are a key/value table with a server-side allowlist and range checks.
-- Secrets live only in the Keychain, under service `com.akshathsinha.claudemulti` and
+- Secrets live only in the Keychain, under service `com.akshathsinha.relayrouting` and
   username `provider-account:<account_id>`.
 
 ## Providers

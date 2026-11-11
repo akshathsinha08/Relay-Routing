@@ -266,7 +266,7 @@ export function SettingsView() {
         </div>
 
         <div className="faint small-text" style={{ marginTop: 14 }}>
-          Claude Multi is an independent local app. It is not affiliated with Anthropic,
+          Relay Routing is an independent local app. It is not affiliated with Anthropic,
           OpenRouter, or Google. Cloud provider usage requires your own API keys and
           billing.
         </div>

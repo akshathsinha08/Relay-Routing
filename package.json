@@ -1,8 +1,8 @@
 {
-  "name": "claude-multi",
+  "name": "relay-routing",
   "private": true,
   "version": "0.1.0",
-  "description": "Claude Multi — local-first multi-provider AI workspace for macOS",
+  "description": "Relay Routing — local-first multi-provider AI workspace for macOS",
   "type": "module",
   "scripts": {
     "dev": "vite",

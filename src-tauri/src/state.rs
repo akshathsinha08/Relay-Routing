@@ -25,7 +25,7 @@ impl AppPaths {
             .app_data_dir()
             .map_err(|error| AppError::internal(format!("cannot resolve app data directory: {error}")))?;
         let paths = Self {
-            db_path: data_dir.join("claude-multi.sqlite3"),
+            db_path: data_dir.join("relayrouting.sqlite3"),
             artifacts_dir: data_dir.join("artifacts"),
             attachments_dir: data_dir.join("attachments"),
             logs_dir: data_dir.join("logs"),
@@ -56,7 +56,7 @@ impl AppContext {
     pub fn new(db: Arc<Db>, paths: AppPaths) -> Arc<Self> {
         let http = reqwest::Client::builder()
             .connect_timeout(Duration::from_secs(15))
-            .user_agent(concat!("ClaudeMulti/", env!("CARGO_PKG_VERSION")))
+            .user_agent(concat!("RelayRouting/", env!("CARGO_PKG_VERSION")))
             .build()
             .expect("failed to build HTTP client");
         Arc::new(Self {

@@ -34,8 +34,8 @@ tested on macOS 26.6 arm64.
 
 Artifacts:
 
-- `src-tauri/target/release/bundle/macos/Claude Multi.app`
-- `src-tauri/target/release/bundle/dmg/Claude Multi_0.1.0_aarch64.dmg`
+- `src-tauri/target/release/bundle/macos/RelayRouting.app`
+- `src-tauri/target/release/bundle/dmg/RelayRouting_0.1.0_aarch64.dmg`
 
 ## Known limitations
 

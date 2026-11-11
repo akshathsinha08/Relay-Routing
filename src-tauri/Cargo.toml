@@ -1,13 +1,13 @@
 [package]
-name = "claude-multi"
+name = "relay-routing"
 version = "0.1.0"
-description = "Claude Multi — local-first multi-provider AI workspace"
+description = "Relay Routing — local-first multi-provider AI workspace"
 authors = ["Akshath Sinha"]
 edition = "2021"
 rust-version = "1.88"
 
 [lib]
-name = "claude_multi_lib"
+name = "relay_routing_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

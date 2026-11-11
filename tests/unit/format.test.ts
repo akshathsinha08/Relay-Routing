@@ -58,7 +58,7 @@ describe("format utilities", () => {
   });
 
   it("derives initials", () => {
-    expect(initials("Claude Multi")).toBe("CM");
+    expect(initials("Relay Routing")).toBe("RR");
     expect(initials("")).toBe("");
   });
 

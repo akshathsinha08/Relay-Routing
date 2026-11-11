@@ -76,7 +76,7 @@ export function Onboarding() {
       <div className="onboarding-card">
         <div className="onboarding-hero">
           <img className="onboarding-mark" src={logo} alt="" />
-          <h1>Welcome to Claude Multi</h1>
+          <h1>Welcome to Relay Routing</h1>
           <p>
             A local-first workspace for chatting with local and cloud models, organizing
             projects, and running durable research tasks.

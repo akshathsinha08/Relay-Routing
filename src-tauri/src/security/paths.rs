@@ -86,7 +86,7 @@ mod tests {
 
     #[test]
     fn destination_stays_under_base() {
-        let base = Path::new("/tmp/claude-multi-test");
+        let base = Path::new("/tmp/relayrouting-test");
         let dest = contained_destination(base, "../../evil.sh").unwrap();
         assert_eq!(dest, base.join("evil.sh"));
     }

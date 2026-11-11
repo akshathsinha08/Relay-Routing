@@ -75,7 +75,7 @@ export function Composer() {
           ref={ref}
           rows={1}
           value={text}
-          placeholder="Message Claude Multi…"
+          placeholder="Message Relay Routing…"
           onChange={(event) => setText(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === "Enter") {

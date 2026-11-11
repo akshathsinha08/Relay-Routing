@@ -46,7 +46,7 @@ export default function App() {
     return (
       <div className="empty" style={{ height: "100vh" }}>
         {loading ? <Loader2 size={22} className="spin" /> : null}
-        <h3>Claude Multi</h3>
+        <h3>Relay Routing</h3>
         <p>{loading ? "Opening local workspace…" : "Loading…"}</p>
       </div>
     );
