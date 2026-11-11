@@ -31,11 +31,12 @@ export function Onboarding() {
   const ollamaAccount = accounts.find(
     (account) => account.providerId === ollama?.id,
   );
-  const anthropic = providers.find((provider) => provider.kind === "anthropic");
-  const anthropicAccounts = accounts.filter(
-    (account) => account.providerId === anthropic?.id,
+  const cloudProviderIds = new Set(
+    providers.filter((provider) => provider.kind !== "ollama").map((provider) => provider.id),
   );
-  const hasAnthropicKey = anthropicAccounts.some((account) => account.hasSecret);
+  const hasCloudKey = accounts.some(
+    (account) => account.hasSecret && cloudProviderIds.has(account.providerId),
+  );
 
   useEffect(() => {
     let live = true;
@@ -117,10 +118,10 @@ export function Onboarding() {
             <div className="item">
               <KeyRound size={15} />
               <span>
-                <strong>Anthropic via API key.</strong>{" "}
-                {hasAnthropicKey
-                  ? "A key is saved for this account."
-                  : "Add your own API key in Providers. Claude subscription logins are not supported."}
+                <strong>Cloud models via API key.</strong>{" "}
+                {hasCloudKey
+                  ? "A key is saved for at least one cloud account."
+                  : "Add your own Anthropic, OpenRouter, or Google Gemini API key in Providers. Subscription logins are not supported."}
               </span>
             </div>
             <div className="item">

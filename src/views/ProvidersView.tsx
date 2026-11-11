@@ -17,6 +17,49 @@ import { useProvidersStore } from "@/stores/providers";
 import { useUiStore } from "@/stores/ui";
 import type { Account, Provider } from "@/types";
 
+function providerDescription(kind: string): string {
+  switch (kind) {
+    case "ollama":
+      return "Runs models locally through the Ollama daemon.";
+    case "anthropic":
+      return "Uses an Anthropic API key. Claude subscription logins are not supported.";
+    case "openrouter":
+      return "Routes requests to many hosted models through an OpenRouter API key.";
+    case "gemini":
+      return "Uses a Google Gemini API key from Google AI Studio.";
+    default:
+      return "Uses an API key for this provider.";
+  }
+}
+
+function providerFooter(kind: string): string {
+  switch (kind) {
+    case "ollama":
+      return "Model list comes from the local Ollama daemon. Pull models with `ollama pull`.";
+    case "anthropic":
+      return "Anthropic requests are sent directly to api.anthropic.com with your key.";
+    case "openrouter":
+      return "OpenRouter requests are sent to openrouter.ai with your key.";
+    case "gemini":
+      return "Gemini requests are sent to generativelanguage.googleapis.com with your key.";
+    default:
+      return "";
+  }
+}
+
+function keyPlaceholder(kind: string): string {
+  switch (kind) {
+    case "anthropic":
+      return "sk-ant-…";
+    case "openrouter":
+      return "sk-or-…";
+    case "gemini":
+      return "AIza…";
+    default:
+      return "API key";
+  }
+}
+
 function AccountRow({
   account,
   provider,
@@ -263,8 +306,8 @@ export function ProvidersView() {
           <div>
             <h1>Providers</h1>
             <p>
-              Local Ollama and Anthropic API accounts. Credentials are stored in the
-              macOS Keychain — never in the database.
+              Local Ollama and cloud API accounts — Anthropic, OpenRouter, and Google
+              Gemini. Credentials are stored in the macOS Keychain — never in the database.
             </p>
           </div>
         </div>
@@ -285,11 +328,7 @@ export function ProvidersView() {
                       {provider.enabled ? "Enabled" : "Disabled"}
                     </span>
                   </div>
-                  <p className="small-text">
-                    {provider.kind === "ollama"
-                      ? "Runs models locally through the Ollama daemon."
-                      : "Uses an Anthropic API key. Claude subscription logins are not supported."}
-                  </p>
+                  <p className="small-text">{providerDescription(provider.kind)}</p>
                 </div>
                 <label className="switch">
                   <input
@@ -389,7 +428,7 @@ export function ProvidersView() {
                         id={`secret-${provider.id}`}
                         type="password"
                         value={newSecret}
-                        placeholder="sk-ant-…"
+                        placeholder={keyPlaceholder(provider.kind)}
                         onChange={(event) => setNewSecret(event.target.value)}
                       />
                       <span className="hint">
@@ -426,9 +465,7 @@ export function ProvidersView() {
 
               <div className="faint small-text" style={{ marginTop: 10, display: "flex", gap: 6 }}>
                 {provider.kind === "ollama" ? <Cpu size={12} /> : <CircleAlert size={12} />}
-                {provider.kind === "ollama"
-                  ? "Model list comes from the local Ollama daemon. Pull models with `ollama pull`."
-                  : "Anthropic requests are sent directly to api.anthropic.com with your key."}
+                {providerFooter(provider.kind)}
               </div>
             </div>
           );

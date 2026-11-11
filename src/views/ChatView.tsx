@@ -27,8 +27,9 @@ export function ChatView() {
           </div>
           <h3>Start a conversation</h3>
           <p>
-            Chat with a local Ollama model or your Anthropic API account. Conversations,
-            attachments, and usage stay on this Mac.
+            Chat with a local Ollama model or a cloud API account — Anthropic,
+            OpenRouter, or Google Gemini. Conversations, attachments, and usage stay on
+            this Mac.
           </p>
           {!hasProvider ? (
             <p className="badge warning">

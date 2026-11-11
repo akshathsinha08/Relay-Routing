@@ -11,8 +11,8 @@ tested on macOS 26.6 arm64.
   providers, settings, onboarding).
 - Backend: Tauri 2 + Rust + SQLite, complete command surface, streaming, attachments,
   projects, tasks, settings, backups.
-- Providers: Ollama (verified live) and Anthropic Messages API (implemented; live use needs
-  a real API key).
+- Providers: Ollama (verified live), Anthropic Messages API, OpenRouter (OpenAI-compatible),
+  and Google Gemini (implemented; live cloud use needs a real API key).
 - Continuity: additive schema v2, generation/attempt/segment records, bounded same-provider
   retry, startup recovery, and explicit Continue.
 - Packaging: unsigned `.app` and `.dmg` produced.

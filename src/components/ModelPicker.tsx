@@ -158,8 +158,8 @@ export function ModelPicker() {
           })}
           <div className="popover-divider" />
           <div className="faint small-text" style={{ padding: "2px 10px 6px" }}>
-            Chat runs on your selected provider. Anthropic uses an API key — subscription
-            logins are not supported.
+            Chat runs on your selected provider. Cloud providers use your own API keys —
+            subscription logins are not supported.
           </div>
         </div>
       ) : null}

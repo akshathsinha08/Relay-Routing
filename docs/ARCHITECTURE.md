@@ -40,7 +40,8 @@ Notable constraints:
 
 ## Providers
 
-`ProviderKind::Ollama` and `ProviderKind::Anthropic` implement a common trait:
+`ProviderKind::Ollama`, `ProviderKind::Anthropic`, `ProviderKind::OpenRouter`, and
+`ProviderKind::Gemini` implement a common trait:
 
 - `health` — reachability, version, latency
 - `list_models` — normalized `ModelInfo` (capabilities, size, family)
@@ -48,8 +49,11 @@ Notable constraints:
 - `complete` — non-streaming completion used by the task engine
 
 Ollama uses `/api/version`, `/api/tags`, `/api/chat`. Anthropic uses `/v1/models` and
-`/v1/messages` with SSE parsing. Errors carry stable codes (`provider_unreachable`,
-`invalid_api_key`, `rate_limited`, …) for UI messaging.
+`/v1/messages`. OpenRouter uses the OpenAI-compatible `/v1/key`, `/v1/models`, and
+`/v1/chat/completions`. Gemini uses `/v1beta/models` and
+`/v1beta/models/{model}:generateContent` (SSE via `alt=sse`). Cloud providers use SSE
+parsing. Errors carry stable codes (`provider_unreachable`, `invalid_api_key`,
+`rate_limited`, …) for UI messaging.
 
 ## Streaming chat and account routing
 

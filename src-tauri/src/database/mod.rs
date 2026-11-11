@@ -25,6 +25,10 @@ const MIGRATIONS: &[(i64, &str)] = &[
         2,
         include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/migrations/0002_generations.sql")),
     ),
+    (
+        3,
+        include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/migrations/0003_cloud_providers.sql")),
+    ),
 ];
 
 pub fn now() -> String {
@@ -83,15 +87,25 @@ impl Db {
             .lock()
             .map_err(|_| AppError::internal("database lock poisoned"))?;
         let current: i64 = guard.query_row("PRAGMA user_version", [], |row| row.get(0))?;
-        for (version, sql) in MIGRATIONS {
-            if *version <= current {
-                continue;
-            }
-            let tx = guard.transaction()?;
-            tx.execute_batch(sql)?;
-            tx.pragma_update(None, "user_version", *version)?;
-            tx.commit()?;
-            tracing::info!(version, "applied database migration");
+        let latest = MIGRATIONS.iter().map(|(version, _)| *version).max().unwrap_or(0);
+        if current >= latest {
+            return Ok(());
+        }
+        // Table-rebuilding migrations require foreign keys to be off, and this
+        // pragma is a no-op inside a transaction, so toggle it around the run.
+        guard.execute_batch("PRAGMA foreign_keys = OFF")?;
+        let outcome = apply_migrations(&mut guard, current);
+        guard.execute_batch("PRAGMA foreign_keys = ON")?;
+        outcome?;
+        let violations: i64 = guard.query_row(
+            "SELECT COUNT(*) FROM pragma_foreign_key_check",
+            [],
+            |row| row.get(0),
+        )?;
+        if violations > 0 {
+            return Err(AppError::internal(format!(
+                "database migration left {violations} foreign key violation(s)"
+            )));
         }
         Ok(())
     }
@@ -111,6 +125,16 @@ impl Db {
         tx.execute(
             "INSERT OR IGNORE INTO providers (id, kind, name, base_url, enabled, created_at, updated_at)
              VALUES ('anthropic', 'anthropic', 'Anthropic', 'https://api.anthropic.com', 1, ?1, ?1)",
+            [&now],
+        )?;
+        tx.execute(
+            "INSERT OR IGNORE INTO providers (id, kind, name, base_url, enabled, created_at, updated_at)
+             VALUES ('openrouter', 'openrouter', 'OpenRouter', 'https://openrouter.ai/api', 1, ?1, ?1)",
+            [&now],
+        )?;
+        tx.execute(
+            "INSERT OR IGNORE INTO providers (id, kind, name, base_url, enabled, created_at, updated_at)
+             VALUES ('gemini', 'gemini', 'Google Gemini', 'https://generativelanguage.googleapis.com', 1, ?1, ?1)",
             [&now],
         )?;
         tx.execute(
@@ -193,6 +217,20 @@ impl Db {
     }
 }
 
+fn apply_migrations(conn: &mut Connection, current: i64) -> Result<(), AppError> {
+    for (version, sql) in MIGRATIONS {
+        if *version <= current {
+            continue;
+        }
+        let tx = conn.transaction()?;
+        tx.execute_batch(sql)?;
+        tx.pragma_update(None, "user_version", *version)?;
+        tx.commit()?;
+        tracing::info!(version, "applied database migration");
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -201,14 +239,17 @@ mod tests {
     fn migrates_and_seeds() {
         let db = Db::open_in_memory().expect("open db");
         let providers = db.list_providers().expect("providers");
-        assert_eq!(providers.len(), 2);
+        assert_eq!(providers.len(), 4);
+        let kinds: Vec<&str> = providers.iter().map(|p| p.kind.as_str()).collect();
+        assert!(kinds.contains(&"openrouter"));
+        assert!(kinds.contains(&"gemini"));
         let accounts = db.list_accounts(None).expect("accounts");
         assert_eq!(accounts.len(), 1);
         assert_eq!(accounts[0].id, "ollama-default");
         let version: i64 = db
             .with_conn(|conn| conn.query_row("PRAGMA user_version", [], |row| row.get(0)))
             .unwrap();
-        assert_eq!(version, 2);
+        assert_eq!(version, 3);
         db.health_check().expect("health");
     }
 

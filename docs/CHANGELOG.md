@@ -4,6 +4,9 @@
 
 ### Added
 
+- OpenRouter and Google Gemini provider kinds with API-key accounts, model discovery,
+  streaming chat, reasoning/usage events, and non-streaming completion.
+- Additive schema v3 rebuilding the `providers` table to allow the new kinds.
 - Account-independent conversations: the saved account is a preference; eligible accounts for
   the fixed provider/model are resolved per generation.
 - Additive schema v2 with `generations`, `generation_attempts`, `message_segments`, and

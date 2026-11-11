@@ -1,5 +1,7 @@
 pub mod anthropic;
+pub mod gemini;
 pub mod ollama;
+pub mod openrouter;
 
 use serde::{Deserialize, Serialize};
 
@@ -223,6 +225,8 @@ pub(crate) fn emit_or_cancel(
 pub enum Kind {
     Ollama,
     Anthropic,
+    OpenRouter,
+    Gemini,
 }
 
 impl Kind {
@@ -230,6 +234,8 @@ impl Kind {
         match value {
             "ollama" => Ok(Self::Ollama),
             "anthropic" => Ok(Self::Anthropic),
+            "openrouter" => Ok(Self::OpenRouter),
+            "gemini" => Ok(Self::Gemini),
             other => Err(ProviderError::BadResponse(format!(
                 "unsupported provider kind: {other}"
             ))),
@@ -245,6 +251,8 @@ pub async fn health_for(
     match kind {
         Kind::Ollama => ollama::health(client, config).await,
         Kind::Anthropic => anthropic::health(client, config).await,
+        Kind::OpenRouter => openrouter::health(client, config).await,
+        Kind::Gemini => gemini::health(client, config).await,
     }
 }
 
@@ -256,6 +264,8 @@ pub async fn list_models_for(
     match kind {
         Kind::Ollama => ollama::list_models(client, config).await,
         Kind::Anthropic => anthropic::list_models(client, config).await,
+        Kind::OpenRouter => openrouter::list_models(client, config).await,
+        Kind::Gemini => gemini::list_models(client, config).await,
     }
 }
 
@@ -270,6 +280,10 @@ pub async fn stream_chat_for(
     match kind {
         Kind::Ollama => ollama::stream_chat(client, config, request, cancel, emit).await,
         Kind::Anthropic => anthropic::stream_chat(client, config, request, cancel, emit).await,
+        Kind::OpenRouter => {
+            openrouter::stream_chat(client, config, request, cancel, emit).await
+        }
+        Kind::Gemini => gemini::stream_chat(client, config, request, cancel, emit).await,
     }
 }
 
@@ -282,5 +296,7 @@ pub async fn complete_for(
     match kind {
         Kind::Ollama => ollama::complete(client, config, request).await,
         Kind::Anthropic => anthropic::complete(client, config, request).await,
+        Kind::OpenRouter => openrouter::complete(client, config, request).await,
+        Kind::Gemini => gemini::complete(client, config, request).await,
     }
 }
