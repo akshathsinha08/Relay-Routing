@@ -149,15 +149,10 @@ a {
 }
 
 .brand-mark {
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  background: linear-gradient(135deg, var(--accent), #e5a17e);
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
+  width: 26px;
+  height: 26px;
+  display: block;
+  object-fit: contain;
 }
 
 .sidebar-actions {
@@ -1474,16 +1469,11 @@ button.list-item:hover {
 }
 
 .onboarding-mark {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--accent), #e5a17e);
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-size: 24px;
-  font-weight: 700;
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--accent) 35%, transparent);
+  width: 72px;
+  height: 72px;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 30px color-mix(in srgb, var(--accent) 35%, transparent));
 }
 
 .onboarding-hero h1 {

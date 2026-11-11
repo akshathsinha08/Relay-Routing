@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import logo from "@/assets/logo.png";
 import { useAppStore } from "@/stores/app";
 import { useProvidersStore } from "@/stores/providers";
 import { useUiStore } from "@/stores/ui";
@@ -74,7 +75,7 @@ export function Onboarding() {
     <div className="onboarding">
       <div className="onboarding-card">
         <div className="onboarding-hero">
-          <div className="onboarding-mark">CM</div>
+          <img className="onboarding-mark" src={logo} alt="" />
           <h1>Welcome to Claude Multi</h1>
           <p>
             A local-first workspace for chatting with local and cloud models, organizing

@@ -9,6 +9,7 @@ import {
   Pin,
 } from "lucide-react";
 
+import logo from "@/assets/logo.png";
 import { conversationTitle, relativeTime, truncate } from "@/lib/format";
 import { useChatStore } from "@/stores/chat";
 import { useProjectsStore } from "@/stores/projects";
@@ -53,7 +54,7 @@ export function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <span className="brand-mark">CM</span>
+        <img className="brand-mark" src={logo} alt="" />
         <span>Claude Multi</span>
       </div>
 
